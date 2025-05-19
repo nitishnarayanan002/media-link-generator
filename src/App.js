@@ -1,12 +1,8 @@
-// App.js
 import React from 'react';
+import Dashboard from './Dashboard';
 
 function App() {
-  return (
-    <div>
-      <h1>Hello from Media Link Generator 👋</h1>
-    </div>
-  );
+  return <Dashboard />;
 }
 
 export default App;
