@@ -1,13 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Auth from './pages/Auth';
+// App.js
+import React from 'react';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Auth />} />
-      </Routes>
-    </Router>
+    <div>
+      <h1>Hello from Media Link Generator 👋</h1>
+    </div>
   );
 }
 
