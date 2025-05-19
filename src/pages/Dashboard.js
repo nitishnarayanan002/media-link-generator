@@ -11,24 +11,35 @@ export default function Dashboard() {
     setLink('');
   };
 
-  const handleUpload = async () => {
-    if (!file) return;
-    setUploading(true);
+ const handleUpload = async () => {
+  if (!file) return;
+  setUploading(true);
 
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const filePath = `public/${fileName}`;
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${Date.now()}.${fileExt}`;
+  const filePath = `public/${fileName}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from('media')
-      .upload(filePath, file, {
-        contentType: file.type, // auto-sets the MIME type like image/png, video/mp4, application/pdf
-      });
+  const { error: uploadError } = await supabase.storage
+    .from('media')
+    .upload(filePath, file, {
+      contentType: file.type,
+    });
 
-    if (uploadError) {
-      console.error('Upload error:', uploadError.message);
-      alert('Upload failed.');
-      setUploading(false);
+  if (uploadError) {
+    console.error('Upload error:', uploadError); // logs full error
+    alert(`Upload failed: ${uploadError.message}`); // shows readable message
+    setUploading(false);
+    return;
+  }
+
+  const { data } = supabase.storage
+    .from('media')
+    .getPublicUrl(filePath);
+
+  setLink(data.publicUrl);
+  setUploading(false);
+};
+
       return;
     }
 
