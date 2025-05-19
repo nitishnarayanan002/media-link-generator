@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { supabase } from '../supabase';
+import { supabase } from '../supabaseClient';
 
 export default function Dashboard() {
   const [file, setFile] = useState(null);
