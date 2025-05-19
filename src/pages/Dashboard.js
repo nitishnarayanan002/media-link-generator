@@ -11,35 +11,24 @@ export default function Dashboard() {
     setLink('');
   };
 
- const handleUpload = async () => {
-  if (!file) return;
-  setUploading(true);
+  const handleUpload = async () => {
+    if (!file) return;
+    setUploading(true);
 
-  const fileExt = file.name.split('.').pop();
-  const fileName = `${Date.now()}.${fileExt}`;
-  const filePath = `public/${fileName}`;
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+    const filePath = `public/${fileName}`;
 
-  const { error: uploadError } = await supabase.storage
-    .from('media')
-    .upload(filePath, file, {
-      contentType: file.type,
-    });
+    const { error: uploadError } = await supabase.storage
+      .from('media')
+      .upload(filePath, file, {
+        contentType: file.type,
+      });
 
-  if (uploadError) {
-    console.error('Upload error:', uploadError); // logs full error
-    alert(`Upload failed: ${uploadError.message}`); // shows readable message
-    setUploading(false);
-    return;
-  }
-
-  const { data } = supabase.storage
-    .from('media')
-    .getPublicUrl(filePath);
-
-  setLink(data.publicUrl);
-  setUploading(false);
-};
-
+    if (uploadError) {
+      console.error('Upload error:', uploadError);
+      alert(`Upload failed: ${uploadError.message}`);
+      setUploading(false);
       return;
     }
 
@@ -62,18 +51,3 @@ export default function Dashboard() {
       <button
         onClick={handleUpload}
         disabled={uploading}
-        className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
-      >
-        {uploading ? 'Uploading...' : 'Upload'}
-      </button>
-      {link && (
-        <div className="mt-4">
-          <p>File uploaded successfully:</p>
-          <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
-            {link}
-          </a>
-        </div>
-      )}
-    </div>
-  );
-}
