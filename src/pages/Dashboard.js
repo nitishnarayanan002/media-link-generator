@@ -20,7 +20,7 @@ export default function Dashboard() {
     const filePath = `public/${fileName}`;
 
     const { error: uploadError } = await supabase.storage
-      .from('media')
+      .from('media') // ensure this matches your bucket name
       .upload(filePath, file, {
         contentType: file.type,
       });
@@ -51,3 +51,18 @@ export default function Dashboard() {
       <button
         onClick={handleUpload}
         disabled={uploading}
+        className="mt-2 px-4 py-2 bg-blue-600 text-white rounded"
+      >
+        {uploading ? 'Uploading...' : 'Upload'}
+      </button>
+      {link && (
+        <div className="mt-4">
+          <p>File uploaded successfully:</p>
+          <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+            {link}
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
