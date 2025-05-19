@@ -8,6 +8,7 @@ export default function Dashboard() {
 
   const handleChange = (e) => {
     setFile(e.target.files[0]);
+    setLink('');
   };
 
   const handleUpload = async () => {
@@ -20,10 +21,12 @@ export default function Dashboard() {
 
     const { error: uploadError } = await supabase.storage
       .from('media')
-      .upload(filePath, file);
+      .upload(filePath, file, {
+        contentType: file.type, // auto-sets the MIME type like image/png, video/mp4, application/pdf
+      });
 
     if (uploadError) {
-      console.error('Upload error:', uploadError);
+      console.error('Upload error:', uploadError.message);
       alert('Upload failed.');
       setUploading(false);
       return;
@@ -40,7 +43,11 @@ export default function Dashboard() {
   return (
     <div className="p-4">
       <h1 className="text-xl font-bold mb-4">Upload a File</h1>
-      <input type="file" onChange={handleChange} />
+      <input
+        type="file"
+        accept="image/*,video/*,.pdf"
+        onChange={handleChange}
+      />
       <button
         onClick={handleUpload}
         disabled={uploading}
